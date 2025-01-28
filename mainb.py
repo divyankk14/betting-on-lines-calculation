@@ -6,6 +6,7 @@ MAX_LINES = 3
 MAX_bet = 100
 MIN_BET = 1
 
+WIN_MULTIPLIER = 2
 #deposite amount wala code
 
 def deposite():
@@ -60,12 +61,29 @@ def main():
         bet = bets()
         total_bet = bet * lines
         if total_bet > balance:
-            print(f'you can not bet more then the balance -  your balance is {balance}')
+            print(f"You cannot bet more than your balance of ₹{balance}.")
+            continue
+        # balance update here
+        balance -= total_bet
+        print(f"Total bet: ₹{total_bet}. Remaining balance: ₹{balance}.")
+        
+        # Computer randoml chooses for a line
+        computer_line = random.randint(1, MAX_LINES)
+        print(f"Computer chose line: {computer_line}.")
+        
+        # Check if user won
+        if computer_line in range(1, lines + 1):  # User wins if computer choice matches user's range
+            winnings = total_bet * WIN_MULTIPLIER
+            balance += winnings
+            print(f"Congratulations! You won ₹{winnings}. Your updated balance is ₹{balance}.")
         else:
+            print("You lost this round. Better luck next time!")
+        
+        # Check if user wants to continue
+        play_again = input("Do you want to play again? (yes/no): ").lower()
+        if play_again != 'yes' or balance < MIN_BET:
+            print(f"\nThank you for playing! Your final balance is ₹{balance}.")
             break
-      
-    print(f"the amount of {bet}rs on {lines} lines is {total_bet} is the final bet amount")
-   
-    # print(balance,lines)
-    
+
+# Run the program
 main()
